@@ -1,7 +1,6 @@
 import numpy as np
-import pinocchio as pin
 
-def min_jerk_interpolation(start, end, horizon, dt):
+def spline_interpolation(start, end, horizon, dt):
     duration = (horizon - 1) * dt
     diff = end - start
 
@@ -9,7 +8,7 @@ def min_jerk_interpolation(start, end, horizon, dt):
     a4 = -15/(duration ** 4)
     a3 = 10/(duration ** 3)
 
-    q = np.zeros((horizon, len(diff)))
+    q = start * np.ones((horizon, len(diff)))
     dq = np.zeros((horizon, len(diff)))
     ddq = np.zeros((horizon, len(diff)))
 
@@ -20,7 +19,7 @@ def min_jerk_interpolation(start, end, horizon, dt):
         ds = 3 * a3 * t**2 + 4 * a4 * t**3 + 5 * a5 * t**4
         dds = 6 * a3 * t + 12 * a4 * t**2 + 20 * a5 * t**3
     
-        q[n] = s * diff
+        q[n] += s * diff
         dq[n] = diff * ds
         ddq[n] = diff * dds
     

@@ -16,7 +16,7 @@ from bullet_utils.env import BulletEnvWithGround
 from robot_properties_nyu_finger.wrapper import NYUFingerRobot
 
 from controllers import HeadedPDController
-from utils import min_jerk_interpolation
+from utils import spline_interpolation
 
 # set up simulation environment
 bullet_env = BulletEnvWithGround()
@@ -40,7 +40,7 @@ hold_pd_controller2 = HoldPDController(head2, 3., 0.05, with_sliders=False)
 
 
 # Follow an interpolated trajectory
-traj_q, _, _ = min_jerk_interpolation(start=np.zeros(3), 
+traj_q, _, _ = spline_interpolation(start=np.zeros(3), 
                                       end=np.array([0., np.pi/4, -np.pi/6]),
                                       horizon=2000,
                                       dt=0.001)
